@@ -1,5 +1,5 @@
 def main():
-    print("Hello from cgl!")
+    print("Hello from ai-constitution-drafter!")
 
 
 if __name__ == "__main__":

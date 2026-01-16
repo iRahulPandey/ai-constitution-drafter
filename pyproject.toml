@@ -1,7 +1,7 @@
 [project]
-name = "cgl"
+name = "ai-constitution-drafter"
 version = "0.1.0"
-description = "Citation Gap Locator - A tool for identifying and exploiting Citation Gaps in Generative Engine Optimization (GEO)"
+description = "Automated Governance System powered by Multi-Agent AI"
 readme = "README.md"
 dependencies = [
     "google-adk==1.18.0",
