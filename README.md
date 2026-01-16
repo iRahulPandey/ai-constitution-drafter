@@ -44,7 +44,7 @@ We use `make` to handle dependencies and execution.
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/yourusername/ai-constitution-drafter.git](https://github.com/yourusername/ai-constitution-drafter.git)
+    git clone [https://github.com/iRahulPandey/ai-constitution-drafter.git](https://github.com/iRahulPandey/ai-constitution-drafter.git)
     cd ai-constitution-drafter
     ```
 
