@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Final Constitution</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:wght@300;400;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Specific Styles for Legal Documents */
+        .legal-document {
+            font-family: 'Merriweather', serif;
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 64px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            border-top: 5px solid #0f172a;
+        }
+        .preamble {
+            font-style: italic;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #e2e8f0;
+            color: #475569;
+            font-size: 1.1rem;
+        }
+        .article {
+            margin-bottom: 40px;
+        }
+        .article h2 {
+            font-family: 'Inter', sans-serif;
+            font-size: 1.25rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #0f172a;
+            border-bottom: 2px solid #0f172a;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+        .axioms-section {
+            margin-top: 64px;
+            background: #f8fafc;
+            padding: 32px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        .axiom-code {
+            font-family: 'JetBrains Mono', monospace;
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 12px;
+            border-radius: 4px;
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body class="course-page">
+    <div class="course-container">
+        <header class="course-header">
+            <a href="/" class="back-link">← Draft New Constitution</a>
+            <div class="logo">⚖️ AI Governance Engine</div>
+        </header>
+        
+        <main class="course-main" style="width: 100%; max-width: 100%;">
+            <article id="doc-container" class="legal-document">
+                <div class="loading-course">Signing document...</div>
+            </article>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const rawData = localStorage.getItem('currentConstitution');
+            if (!rawData) {
+                window.location.href = '/';
+                return;
+            }
+            
+            const container = document.getElementById('doc-container');
+            
+            try {
+                // 1. Parse the JSON string from the backend
+                const data = JSON.parse(rawData);
+
+                // 2. Build HTML Structure
+                let html = `
+                    <h1 style="text-align: center; margin-bottom: 16px;">${data.title}</h1>
+                    <div class="preamble">${data.preamble}</div>
+                `;
+
+                // 3. Loop through Articles
+                data.articles.forEach(article => {
+                    // Convert markdown content inside articles if needed, or just text
+                    const content = marked.parse(article.content); 
+                    html += `
+                        <div class="article">
+                            <h2>${article.title}</h2>
+                            <div>${content}</div>
+                        </div>
+                    `;
+                });
+
+                // 4. Add GEO Optimized Axioms
+                html += `
+                    <div class="axioms-section">
+                        <h3 style="font-family:'Inter', sans-serif; margin-bottom:16px;">Machine-Readable Axioms (GEO Optimized)</h3>
+                        ${data.citable_axioms.map(axiom => `<div class="axiom-code">${axiom}</div>`).join('')}
+                    </div>
+                `;
+
+                container.innerHTML = html;
+
+            } catch (e) {
+                console.error("Failed to render constitution:", e);
+                container.innerHTML = `<div style="color:red; text-align:center;">Error rendering document. Raw output was not valid JSON.<br><br>Raw output: ${rawData.substring(0, 100)}...</div>`;
+            }
+        });
+    </script>
+</body>
+</html>
